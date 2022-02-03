@@ -51,18 +51,23 @@ protected:
 
 	// 시야 관련
 	FRotator ControllerRot;
-	// 모드 관련
+
+	// 모드(인칭 변경) 관련
 	bool IsFPS = false; // 1인칭 시점 인지 확인
 
+	// UI
+	class UPlayerHUD_UserWidget* PlayerHUD;
+	
+	// 컨트롤러 //////////////////////////////////////////////////////////////////////////////
 	// 입력 관련
 	void PlayerModChange();// 모드 체인지
 
 	// Axis 관련
 	void MoveForward(float Value); // 앞, 뒤 이동 관련
 	void MoveRight(float Value);   // 좌, 우 이동 관련
-
 	void TurnAtRate(float Rate);   // 좌, 우 시야 관련
 	void LookUpAtRate(float Rate); // 상, 하 시야 관련
+	/////////////////////////////////////////////////////////////////////////////////////////
 
 // 이벤트
 protected:

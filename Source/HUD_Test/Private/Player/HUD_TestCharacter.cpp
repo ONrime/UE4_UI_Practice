@@ -6,6 +6,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Widget/PlayerHUD_UserWidget.h"
 
 
 AHUD_TestCharacter::AHUD_TestCharacter()
@@ -95,6 +96,10 @@ AHUD_TestCharacter::AHUD_TestCharacter()
 		ArmMesh->SetAnimInstanceClass(ARM_ANIMBP.Class);
 	}
 
+	// HUD
+	static ConstructorHelpers::FClassFinder<UUserWidget>PLAYERHUD_WIDGET(TEXT("WidgetBlueprint'/Game/UI/Player_HUD_Widget.Player_HUD_Widget_c'"));
+	if (PLAYERHUD_WIDGET.Succeeded()) PlayerHUD = CreateWidget<UPlayerHUD_UserWidget>(GetWorld(), PLAYERHUD_WIDGET.Class);
+	
 
 	// 초기화
 	IsMove = true; // 캐릭터가 움직이게 설정
@@ -135,6 +140,8 @@ void AHUD_TestCharacter::BeginPlay()
 	LegMesh->SetCastShadow(false);  // 모두에게 그림자가 보이지 않게 합니다. (다리)
 	GetMesh()->SetOwnerNoSee(false);      // 오직 플레이어에게만 보이지 않게 합니다. (몸)		
 	GetMesh()->bCastHiddenShadow = true; // 모두에게 그림자가 보이게 합니다. (몸)
+
+	if (PlayerHUD) PlayerHUD->AddToViewport();
 }
 
 void AHUD_TestCharacter::Tick(float DeltaTime)
