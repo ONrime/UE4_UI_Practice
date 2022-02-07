@@ -12,4 +12,5 @@ AHUD_TestGameMode::AHUD_TestGameMode()
 	{
 		DefaultPawnClass = AHUD_TestCharacter::StaticClass();
 	}
+
 }

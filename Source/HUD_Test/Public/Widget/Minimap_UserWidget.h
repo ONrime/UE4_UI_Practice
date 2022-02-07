@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "Interface/MapIcon_Interface.h"
 #include "Minimap_UserWidget.generated.h"
 
 /**
@@ -24,12 +25,19 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Base)
 	class UMaterialInstance* Map_Instance;
 
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "MapIcon")
+	void AddDifferentIcon(AActor* Actor, EMapIconState State);
+	virtual void AddDifferentIcon_Implementation(AActor* Actor, EMapIconState State);
+
 protected:
 	virtual void NativeConstruct() override;
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 
 	UPROPERTY()
 	class UMaterialParameterCollectionInstance* Map_ParameterCollection;
+
+	//TSubclassOf<class UIconLocation_UserWidget> AllianceLocation_WidgetClass;
+	//TSubclassOf<class UIconLocation_UserWidget> EnemyLocation_WidgetClass;
 
 private:
 

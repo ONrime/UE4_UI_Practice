@@ -4,10 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Interface/MapIcon_Interface.h"
 #include "HUD_TestCharacter.generated.h"
 
 UCLASS(config=Game)
-class AHUD_TestCharacter : public ACharacter
+class AHUD_TestCharacter : public ACharacter, public IMapIcon_Interface
 {
 	GENERATED_BODY()
 
@@ -57,6 +58,7 @@ protected:
 
 	// UI
 	class UPlayerHUD_UserWidget* PlayerHUD;
+	TSubclassOf<class UPlayerHUD_UserWidget> PlayerHUDClass;
 	
 	// 컨트롤러 //////////////////////////////////////////////////////////////////////////////
 	// 입력 관련
@@ -99,6 +101,16 @@ public:
 
 	// 시야
 	FRotator GetControllerRot() { return ControllerRot; }
+
+
+	UFUNCTION(BlueprintCallable)
+	class UUserWidget* GetPlayerHUD();
+
+	// 미니맵 아이콘설정
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "MapIcon")
+	void SetIconState(EMapIconState Set);
+	virtual void SetIconState_Implementation(EMapIconState Set) override;
+
 
 };
 

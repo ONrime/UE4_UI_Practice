@@ -24,6 +24,7 @@ void UMinimap_UserWidget::NativeConstruct()
 		Map_ParameterCollection->SetScalarParameterValue("Dimensions", Map_Dimensions);
 		Map_ParameterCollection->SetScalarParameterValue("Zoom", Map_Zoom);
 	}
+
 }
 
 void UMinimap_UserWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
@@ -41,3 +42,10 @@ void UMinimap_UserWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaT
 		Map_ParameterCollection->SetScalarParameterValue("Zoom", Map_Zoom);
 	}
 }
+
+// 새로운 아이콘 추가
+void UMinimap_UserWidget::AddDifferentIcon_Implementation(AActor* Actor, EMapIconState State)
+{
+
+}
+

@@ -98,7 +98,7 @@ AHUD_TestCharacter::AHUD_TestCharacter()
 
 	// HUD
 	static ConstructorHelpers::FClassFinder<UUserWidget>PLAYERHUD_WIDGET(TEXT("WidgetBlueprint'/Game/UI/Player_HUD_Widget.Player_HUD_Widget_c'"));
-	if (PLAYERHUD_WIDGET.Succeeded()) PlayerHUD = CreateWidget<UPlayerHUD_UserWidget>(GetWorld(), PLAYERHUD_WIDGET.Class);
+	if (PLAYERHUD_WIDGET.Succeeded()) PlayerHUDClass = PLAYERHUD_WIDGET.Class;
 	
 
 	// 초기화
@@ -141,7 +141,31 @@ void AHUD_TestCharacter::BeginPlay()
 	GetMesh()->SetOwnerNoSee(false);      // 오직 플레이어에게만 보이지 않게 합니다. (몸)		
 	GetMesh()->bCastHiddenShadow = true; // 모두에게 그림자가 보이게 합니다. (몸)
 
-	if (PlayerHUD) PlayerHUD->AddToViewport();
+	if (IsLocallyControlled())
+	{
+		// 플레이어 일 때
+		PlayerHUD = CreateWidget<UPlayerHUD_UserWidget>(GetWorld(), PlayerHUDClass);
+		IconState = EMapIconState::PLAYER;
+
+		if (PlayerHUD)
+		{
+			PlayerHUD->AddToViewport();
+			PlayerHUD->StartMiniMapEvent.Execute();
+		}
+	}
+	else 
+	{
+		// 플레이어가 아닐때 (적, 동료)
+		IconState = EMapIconState::ALLIANCE; // 아이콘 설정
+
+		// 플레이어에게 알리기
+		AHUD_TestCharacter* OtherPlayer = Cast<AHUD_TestCharacter>(GetWorld()->GetFirstPlayerController()->GetPawn());
+		//if(OtherPlayer && OtherPlayer->PlayerHUD) OtherPlayer->PlayerHUD->UpdateMinimapEvent.Broadcast(this, (int)IconState);
+		if(OtherPlayer && OtherPlayer->PlayerHUD) OtherPlayer->PlayerHUD->UpdateMinimapEvent.Execute(this, (int)IconState);
+	}
+
+	
+	
 }
 
 void AHUD_TestCharacter::Tick(float DeltaTime)
@@ -175,6 +199,11 @@ bool AHUD_TestCharacter::NetMulticast_SendControllerRot_Validate(FRotator Send)
 void AHUD_TestCharacter::NetMulticast_SendControllerRot_Implementation(FRotator Send)
 {
 	ControllerRot = Send;
+}
+
+UUserWidget* AHUD_TestCharacter::GetPlayerHUD()
+{
+	return PlayerHUD;
 }
 
 
@@ -274,5 +303,14 @@ void AHUD_TestCharacter::MoveRight(float Value)
 		Direction.Z = 0.0f;
 		Direction.Normalize();
 		MoveDir += Direction * FMath::Clamp(Value, -1.0f, 1.0f);
+	}
+}
+
+void AHUD_TestCharacter::SetIconState_Implementation(EMapIconState Set)
+{
+	if (!IsLocallyControlled())
+	{
+		//PlayerHUD
+		//PlayerHUD->UpdateMinimapEvent.Execute();
 	}
 }
