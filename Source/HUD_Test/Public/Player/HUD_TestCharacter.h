@@ -108,6 +108,5 @@ public:
 	EMapIconState GetIconState();
 	virtual EMapIconState GetIconState_Implementation() override;
 
-
 };
 
