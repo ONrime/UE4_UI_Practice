@@ -56,9 +56,8 @@ protected:
 	// 모드(인칭 변경) 관련
 	bool IsFPS = false; // 1인칭 시점 인지 확인
 
-	// UI
-	class UPlayerHUD_UserWidget* PlayerHUD;
-	TSubclassOf<class UPlayerHUD_UserWidget> PlayerHUDClass;
+	//HUD
+	class AHUD_PlayerHUD* PlayerHUD;
 	
 	// 컨트롤러 //////////////////////////////////////////////////////////////////////////////
 	// 입력 관련
@@ -75,6 +74,8 @@ protected:
 protected:
 	// 입력 장치와 함수 바인딩
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	// 컴포넌트 초기화 이후에 작동되는 함수
+	virtual void PostInitializeComponents() override;
 	// 준비를 다 마치고 나서 시작할 때
 	virtual void BeginPlay() override;
 	// 매번 작동되는 함수
@@ -102,14 +103,10 @@ public:
 	// 시야
 	FRotator GetControllerRot() { return ControllerRot; }
 
-
-	UFUNCTION(BlueprintCallable)
-	class UUserWidget* GetPlayerHUD();
-
 	// 미니맵 아이콘설정
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "MapIcon")
-	void SetIconState(EMapIconState Set);
-	virtual void SetIconState_Implementation(EMapIconState Set) override;
+	EMapIconState GetIconState();
+	virtual EMapIconState GetIconState_Implementation() override;
 
 
 };

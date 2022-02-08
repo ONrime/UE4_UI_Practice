@@ -6,7 +6,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "Widget/PlayerHUD_UserWidget.h"
+#include "Game/HUD_PlayerHUD.h"
 
 
 AHUD_TestCharacter::AHUD_TestCharacter()
@@ -96,11 +96,7 @@ AHUD_TestCharacter::AHUD_TestCharacter()
 		ArmMesh->SetAnimInstanceClass(ARM_ANIMBP.Class);
 	}
 
-	// HUD
-	static ConstructorHelpers::FClassFinder<UUserWidget>PLAYERHUD_WIDGET(TEXT("WidgetBlueprint'/Game/UI/Player_HUD_Widget.Player_HUD_Widget_c'"));
-	if (PLAYERHUD_WIDGET.Succeeded()) PlayerHUDClass = PLAYERHUD_WIDGET.Class;
 	
-
 	// 초기화
 	IsMove = true; // 캐릭터가 움직이게 설정
 	ControllerRot = FRotator::ZeroRotator; // 컨트롤러 회전 값
@@ -109,6 +105,7 @@ AHUD_TestCharacter::AHUD_TestCharacter()
 
 	BaseTurnRate = 45.f;
 	BaseLookUpRate = 45.f;
+
 }
 
 void AHUD_TestCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
@@ -126,6 +123,19 @@ void AHUD_TestCharacter::SetupPlayerInputComponent(class UInputComponent* Player
 	PlayerInputComponent->BindAxis("LookUp", this, &AHUD_TestCharacter::LookUpAtRate);
 }
 
+void AHUD_TestCharacter::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+
+	if (IsLocallyControlled())
+	{
+		IconState = EMapIconState::PLAYER;
+	}
+	else {
+		IconState = EMapIconState::ALLIANCE; // 아이콘 설정
+	}
+}
+
 void AHUD_TestCharacter::BeginPlay()
 {
 	Super::BeginPlay();
@@ -141,29 +151,29 @@ void AHUD_TestCharacter::BeginPlay()
 	GetMesh()->SetOwnerNoSee(false);      // 오직 플레이어에게만 보이지 않게 합니다. (몸)		
 	GetMesh()->bCastHiddenShadow = true; // 모두에게 그림자가 보이게 합니다. (몸)
 
+
 	if (IsLocallyControlled())
 	{
 		// 플레이어 일 때
-		PlayerHUD = CreateWidget<UPlayerHUD_UserWidget>(GetWorld(), PlayerHUDClass);
+		PlayerHUD = Cast<AHUD_PlayerHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
 		IconState = EMapIconState::PLAYER;
-
-		if (PlayerHUD)
-		{
-			PlayerHUD->AddToViewport();
-			PlayerHUD->StartMiniMapEvent.Execute();
-		}
+		PlayerHUD->StartMiniMap();
+		//StartIcon(IconState);
+		//UE_LOG(LogTemp, Warning, TEXT("AHUD_TestCharacter: BeginPlay"));
 	}
-	else 
+	else
 	{
 		// 플레이어가 아닐때 (적, 동료)
+		PlayerHUD = nullptr;
 		IconState = EMapIconState::ALLIANCE; // 아이콘 설정
 
 		// 플레이어에게 알리기
-		AHUD_TestCharacter* OtherPlayer = Cast<AHUD_TestCharacter>(GetWorld()->GetFirstPlayerController()->GetPawn());
+		AHUD_PlayerHUD* OtherPlayerHUD = Cast<AHUD_PlayerHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
 		//if(OtherPlayer && OtherPlayer->PlayerHUD) OtherPlayer->PlayerHUD->UpdateMinimapEvent.Broadcast(this, (int)IconState);
-		if(OtherPlayer && OtherPlayer->PlayerHUD) OtherPlayer->PlayerHUD->UpdateMinimapEvent.Execute(this, (int)IconState);
-	}
+		//if(OtherPlayer && OtherPlayer->PlayerHUD) OtherPlayer->PlayerHUD->UpdateMinimapEvent.Execute(this, (int)IconState);
+		if (OtherPlayerHUD) OtherPlayerHUD->UpdateMiniMap(this, (int)IconState);
 
+	}
 	
 	
 }
@@ -200,12 +210,6 @@ void AHUD_TestCharacter::NetMulticast_SendControllerRot_Implementation(FRotator 
 {
 	ControllerRot = Send;
 }
-
-UUserWidget* AHUD_TestCharacter::GetPlayerHUD()
-{
-	return PlayerHUD;
-}
-
 
 void AHUD_TestCharacter::TurnAtRate(float Rate)
 {
@@ -306,11 +310,13 @@ void AHUD_TestCharacter::MoveRight(float Value)
 	}
 }
 
-void AHUD_TestCharacter::SetIconState_Implementation(EMapIconState Set)
+EMapIconState AHUD_TestCharacter::GetIconState_Implementation()
 {
-	if (!IsLocallyControlled())
+	if (PlayerHUD)
 	{
 		//PlayerHUD
 		//PlayerHUD->UpdateMinimapEvent.Execute();
+		//PlayerHUD->StartMiniMap((int)Set);
 	}
+	return IconState;
 }

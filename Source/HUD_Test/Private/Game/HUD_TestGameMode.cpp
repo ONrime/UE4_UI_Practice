@@ -2,6 +2,7 @@
 
 #include "Game/HUD_TestGameMode.h"
 #include "Player/HUD_TestCharacter.h"
+#include "Game/HUD_PlayerHUD.h"
 #include "UObject/ConstructorHelpers.h"
 
 AHUD_TestGameMode::AHUD_TestGameMode()
@@ -11,6 +12,7 @@ AHUD_TestGameMode::AHUD_TestGameMode()
 	if (PlayerPawnBPClass.Class != NULL)
 	{
 		DefaultPawnClass = AHUD_TestCharacter::StaticClass();
+		HUDClass = AHUD_PlayerHUD::StaticClass();
 	}
 
 }

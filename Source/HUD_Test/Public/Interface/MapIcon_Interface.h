@@ -33,8 +33,16 @@ class HUD_TEST_API IMapIcon_Interface
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
+
+	// 플레이어 기준으로 시작 할 때 아이콘 찾기
+	//UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "MapIcon")
+	//void StartIcon(EMapIconState Set);
+
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "MapIcon")
-	void SetIconState(EMapIconState Set);
+	EMapIconState GetIconState();
+
+	//UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "MapIcon")
+	//void UpdateIcon(EMapIconState Set);
 
 	EMapIconState IconState;
 
