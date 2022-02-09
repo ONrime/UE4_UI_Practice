@@ -9,7 +9,10 @@ void UIconLocation_UserWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-
+	/*IsStatic = false;		// 미니맵의 보이는 범위 결정(미니맵을 벗어나도 보이게 할지 결정)
+	IsSoundWave = false;	// 웨이브
+	IsVision = false;		// 시야각
+	IsControllerRotation = false;*/
 }
 
 void UIconLocation_UserWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
@@ -21,8 +24,17 @@ void UIconLocation_UserWidget::NativeTick(const FGeometry& MyGeometry, float InD
 	if (OnwerActor && Minimap_Widget)
 	{
 		// 아이콘의 회전 구하기
-		// 액터의 방향에 따라 회전시킵니다.
-		SetRenderTransformAngle(OnwerActor->GetActorRotation().Yaw);
+		if (IsControllerRotation)
+		{
+			// 컨트롤러의 회전 값에 따른 아이콘 회전
+			SetRenderTransformAngle(GetWorld()->GetFirstPlayerController()->GetControlRotation().Yaw);
+		}
+		else
+		{
+			// 액터의 방향에 따라 회전시킵니다.
+			SetRenderTransformAngle(OnwerActor->GetActorRotation().Yaw);
+		}
+		
 
 
 		// 아이콘의 위치 구하기
@@ -66,6 +78,5 @@ void UIconLocation_UserWidget::NativeTick(const FGeometry& MyGeometry, float InD
 				Icon_Image->SetVisibility(ESlateVisibility::Visible);
 			}
 		}
-
 	}
 }

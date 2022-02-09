@@ -32,6 +32,8 @@ public:
 	bool IsSoundWave;	// 웨이브
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool IsVision;		// 시야각
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool IsControllerRotation;		// 컨트롤러에 따라 회전
 
 protected:
 	virtual void NativeConstruct() override;
