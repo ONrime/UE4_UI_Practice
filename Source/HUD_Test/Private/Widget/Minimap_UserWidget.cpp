@@ -4,6 +4,8 @@
 #include "Widget/Minimap_UserWidget.h"
 #include "Materials/MaterialParameterCollection.h"
 #include "Materials/MaterialParameterCollectionInstance.h"
+#include "Widget/IconLocation_UserWidget.h"
+#include "EngineUtils.h"
 
 void UMinimap_UserWidget::NativeConstruct()
 {
@@ -49,3 +51,24 @@ void UMinimap_UserWidget::AddDifferentIcon_Implementation(AActor* Actor, EMapIco
 
 }
 
+// 아이콘 삭제
+void UMinimap_UserWidget::DelDifferentIcon_Implementation(AActor* Actor)
+{
+	/*UE_LOG(LogTemp, Warning, TEXT("DelDifferentIcon_Implementation"));
+	if (Map_Icons.Num() > 0)
+	{
+		UIconLocation_UserWidget* DelIcon = nullptr;
+		for (UIconLocation_UserWidget* Icon : Map_Icons)
+		{
+			if (Icon->OnwerActor == Actor)
+			{
+				UE_LOG(LogTemp, Warning, TEXT("DelDifferentIcon_Implementation: find"));
+				DelIcon = Icon;
+				break;
+			}
+		}
+		UE_LOG(LogTemp, Warning, TEXT("DelDifferentIcon_Implementation: del"));
+		DelIcon->RemoveFromParent();
+
+	}*/
+}

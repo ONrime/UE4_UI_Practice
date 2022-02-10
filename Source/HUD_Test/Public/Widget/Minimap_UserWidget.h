@@ -24,10 +24,18 @@ public:
 	float Map_Dimensions;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Base)
 	class UMaterialInstance* Map_Instance;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Base)
+	TArray<class UIconLocation_UserWidget*> Map_Icons;
 
+	// 미니맵에 아이콘 추가
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "MapIcon")
 	void AddDifferentIcon(AActor* Actor, EMapIconState State);
 	virtual void AddDifferentIcon_Implementation(AActor* Actor, EMapIconState State);
+
+	// 미니맵에 아이콘 삭제
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "MapIcon")
+	void DelDifferentIcon(AActor* Actor);
+	virtual void DelDifferentIcon_Implementation(AActor* Actor);
 
 protected:
 	virtual void NativeConstruct() override;

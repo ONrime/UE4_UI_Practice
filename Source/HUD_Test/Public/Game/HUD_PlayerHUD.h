@@ -34,6 +34,8 @@ public:
 	void StartMiniMap();
 	UFUNCTION(BlueprintCallable)
 	void UpdateMiniMap(AActor* IconActor, int IconState);
+	UFUNCTION(BlueprintCallable)
+	void DelIconMiniMap(AActor* IconActor);
 
 
 };

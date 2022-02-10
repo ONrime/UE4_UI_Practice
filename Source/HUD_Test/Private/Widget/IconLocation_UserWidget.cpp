@@ -67,15 +67,17 @@ void UIconLocation_UserWidget::NativeTick(const FGeometry& MyGeometry, float InD
 
 		// 아이콘 설정에 따른 계산
 		// IsStatic가 true면 미니맵에 벗어나면 사라지게 합니다.
-		if (Icon_Image && !IsStatic)
+		if (!IsStatic)
 		{
 			if (IconScala >= 130.0f)
 			{
-				Icon_Image->SetVisibility(ESlateVisibility::Hidden);
+				if (Icon_Image) Icon_Image->SetVisibility(ESlateVisibility::Hidden);
+				if (Icon_Sight_Widget) Icon_Sight_Widget->SetVisibility(ESlateVisibility::Hidden);
 			}
 			else
 			{
-				Icon_Image->SetVisibility(ESlateVisibility::Visible);
+				if (Icon_Image) Icon_Image->SetVisibility(ESlateVisibility::Visible);
+				if (Icon_Sight_Widget) Icon_Sight_Widget->SetVisibility(ESlateVisibility::Visible);
 			}
 		}
 	}

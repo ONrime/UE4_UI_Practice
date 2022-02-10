@@ -63,3 +63,11 @@ void AHUD_PlayerHUD::UpdateMiniMap(AActor* IconActor, int IconState)
 	}
 }
 
+void AHUD_PlayerHUD::DelIconMiniMap(AActor* IconActor)
+{
+	if (PlayerMainUI)
+	{
+		PlayerMainUI->DelIconMiniMap(IconActor);
+	}
+}
+

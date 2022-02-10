@@ -65,3 +65,12 @@ void UPlayerHUD_UserWidget::UpdateMiniMap(AActor* IconActor, EMapIconState IconS
 		Minimap_Widget->AddDifferentIcon(IconActor, IconState);
 	}
 }
+
+void UPlayerHUD_UserWidget::DelIconMiniMap(AActor* IconActor)
+{
+	if (Minimap_Widget)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("DelIconMiniMap"));
+		Minimap_Widget->DelDifferentIcon(IconActor);
+	}
+}

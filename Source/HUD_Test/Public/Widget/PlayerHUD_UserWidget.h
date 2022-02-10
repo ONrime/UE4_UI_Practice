@@ -29,6 +29,7 @@ public:
 
 	void StartMiniMap();
 	void UpdateMiniMap(AActor* IconActor, EMapIconState IconState);
+	void DelIconMiniMap(AActor* IconActor);
 
 protected:
 	virtual void NativeConstruct() override;
