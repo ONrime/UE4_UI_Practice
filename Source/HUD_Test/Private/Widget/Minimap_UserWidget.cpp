@@ -4,6 +4,7 @@
 #include "Widget/Minimap_UserWidget.h"
 #include "Materials/MaterialParameterCollection.h"
 #include "Materials/MaterialParameterCollectionInstance.h"
+#include "Interface/MapIcon_Interface.h"
 #include "Widget/IconLocation_UserWidget.h"
 #include "EngineUtils.h"
 
@@ -48,7 +49,17 @@ void UMinimap_UserWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaT
 // 새로운 아이콘 추가
 void UMinimap_UserWidget::AddDifferentIcon_Implementation(AActor* Actor, EMapIconState State)
 {
-
+	//UE_LOG(LogTemp, Warning, TEXT("AddDifferentIcon_Implementation"));
+	/*if (Actor)
+	{
+		IMapIcon_Interface* Icon_Actor = Cast<IMapIcon_Interface>(Actor);
+		
+		// 인터페이스 인지 검사
+		if (Actor->GetClass()->ImplementsInterface(UMapIcon_Interface::StaticClass()))
+		{
+			if(Icon_Actor) Icon_Actor->SetIconLocationWidget(this);
+		}
+	}*/
 }
 
 // 아이콘 삭제

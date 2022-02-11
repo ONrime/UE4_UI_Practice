@@ -58,6 +58,7 @@ protected:
 
 	//HUD
 	class AHUD_PlayerHUD* PlayerHUD;
+	class UIconLocation_UserWidget* Icon_Widget = nullptr;
 	
 	// 컨트롤러 //////////////////////////////////////////////////////////////////////////////
 	// 입력 관련
@@ -107,6 +108,11 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "MapIcon")
 	EMapIconState GetIconState();
 	virtual EMapIconState GetIconState_Implementation() override;
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "MapIcon")
+	void SetIconLocationWidget(class UUserWidget* Set);
+	virtual void SetIconLocationWidget_Implementation(class UUserWidget* Set) override;
+
 
 };
 

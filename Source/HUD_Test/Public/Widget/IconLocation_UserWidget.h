@@ -16,9 +16,6 @@ class HUD_TEST_API UIconLocation_UserWidget : public UUserWidget
 	
 public:
 
-	/*UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "MapIcon")
-	void AddMapIcon();
-	virtual void AddMapIcon_Implementation() override;*/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class AActor* OnwerActor;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -45,5 +42,19 @@ public:
 protected:
 	virtual void NativeConstruct() override;
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
+
+
+	void HideIcone(bool State);
+	UFUNCTION()
+	void HideIconEnd();
+
+	// ≈∏¿Ã∏”
+	FTimerHandle HiddenEndTimer;
+
+public:
+
+	UFUNCTION(BlueprintCallable, Category = "Icon")
+	void IconOnwerAttack(bool Set);
+
 
 };

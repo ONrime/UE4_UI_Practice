@@ -13,6 +13,8 @@ void UIconLocation_UserWidget::NativeConstruct()
 	IsSoundWave = false;	// 웨이브
 	IsVision = false;		// 시야각
 	IsControllerRotation = false;*/
+
+	HideIcone(IsHiddenIcon);
 }
 
 void UIconLocation_UserWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
@@ -67,18 +69,81 @@ void UIconLocation_UserWidget::NativeTick(const FGeometry& MyGeometry, float InD
 
 		// 아이콘 설정에 따른 계산
 		// IsStatic가 true면 미니맵에 벗어나면 사라지게 합니다.
-		if (!IsStatic)
+
+		if (!IsStatic && !IsHiddenIcon)
 		{
 			if (IconScala >= 130.0f)
 			{
-				if (Icon_Image) Icon_Image->SetVisibility(ESlateVisibility::Hidden);
-				if (Icon_Sight_Widget) Icon_Sight_Widget->SetVisibility(ESlateVisibility::Hidden);
+				// 가리기
+				if (Icon_Image->GetVisibility() != ESlateVisibility::Hidden)
+				{
+					HideIcone(true);
+				}
 			}
 			else
 			{
-				if (Icon_Image) Icon_Image->SetVisibility(ESlateVisibility::Visible);
-				if (Icon_Sight_Widget) Icon_Sight_Widget->SetVisibility(ESlateVisibility::Visible);
+				// 보이기
+				if (Icon_Image->GetVisibility() != ESlateVisibility::Visible)
+				{
+					HideIcone(false);
+				}
 			}
 		}
+		/*/bool HideIcone = IsHiddenIcon;
+		if (!IsStatic && !IsHiddenIcon)
+		{
+			if (IconScala >= 130.0f)
+			{
+				HideIcone = true;
+			}
+			else
+			{
+				HideIcone = false;
+			}
+		}
+
+		if (HideIcone)
+		{
+			if (Icon_Image) Icon_Image->SetVisibility(ESlateVisibility::Hidden);
+			if (Icon_Sight_Widget) Icon_Sight_Widget->SetVisibility(ESlateVisibility::Hidden);
+		}
+		else
+		{
+			if (Icon_Image) Icon_Image->SetVisibility(ESlateVisibility::Visible);
+			if (Icon_Sight_Widget) Icon_Sight_Widget->SetVisibility(ESlateVisibility::Visible);
+		}*/
 	}
+}
+
+void UIconLocation_UserWidget::HideIcone(bool State)
+{
+	if (State)
+	{
+		if (Icon_Image) Icon_Image->SetVisibility(ESlateVisibility::Hidden);
+		if (Icon_Sight_Widget) Icon_Sight_Widget->SetVisibility(ESlateVisibility::Hidden);
+	}
+	else 
+	{
+		if (Icon_Image) Icon_Image->SetVisibility(ESlateVisibility::Visible);
+		if (Icon_Sight_Widget) Icon_Sight_Widget->SetVisibility(ESlateVisibility::Visible);
+	}
+}
+
+void UIconLocation_UserWidget::HideIconEnd()
+{
+	UE_LOG(LogTemp, Warning, TEXT("HideIconEnd"));
+	IsHiddenIcon = true;
+	HideIcone(IsHiddenIcon);
+}
+
+void UIconLocation_UserWidget::IconOnwerAttack(bool Set)
+{
+	IsHiddenIcon = Set;
+	HideIcone(IsHiddenIcon);
+	if (GetWorld()->GetTimerManager().IsTimerActive(HiddenEndTimer))
+	{
+		GetWorld()->GetTimerManager().ClearTimer(HiddenEndTimer);
+	}
+	UE_LOG(LogTemp, Warning, TEXT("HiddenEndTimer"));
+	GetWorld()->GetTimerManager().SetTimer(HiddenEndTimer, this, &UIconLocation_UserWidget::HideIconEnd, 3.0f, false);
 }

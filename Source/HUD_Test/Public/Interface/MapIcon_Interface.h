@@ -41,9 +41,16 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "MapIcon")
 	EMapIconState GetIconState();
 
+	// 아이콘과 액터 연결하기
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "MapIcon")
+	void SetIconLocationWidget(class UUserWidget* Set);
+
 	//UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "MapIcon")
 	//void UpdateIcon(EMapIconState Set);
 
 	EMapIconState IconState;
+
+protected:
+	//class UIconLocation_UserWidget* IconLocation_Widget = nullptr;
 
 };

@@ -7,6 +7,7 @@
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Game/HUD_PlayerHUD.h"
+#include "Widget/IconLocation_UserWidget.h"
 
 
 AHUD_TestCharacter::AHUD_TestCharacter()
@@ -319,4 +320,9 @@ EMapIconState AHUD_TestCharacter::GetIconState_Implementation()
 		//PlayerHUD->StartMiniMap((int)Set);
 	}
 	return IconState;
+}
+
+void AHUD_TestCharacter::SetIconLocationWidget_Implementation(class UUserWidget* Set)
+{
+	Icon_Widget = Cast<UIconLocation_UserWidget>(Set);
 }
