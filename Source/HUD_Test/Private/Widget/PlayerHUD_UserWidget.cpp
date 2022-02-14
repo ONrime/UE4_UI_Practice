@@ -24,6 +24,7 @@ void UPlayerHUD_UserWidget::NativeConstruct()
 
 	//UpdateMinimapEvent.AddDynamic(this, &UPlayerHUD_UserWidget::UpdateMiniMap);
 
+	//MiniMap_WidgetClass = LoadObject<UMinimap_UserWidget>(nullptr, TEXT("WidgetBlueprint'/Game/UI/Minimap/Minimap_Widget_2.Minimap_Widget_2'"));
 }
 
 void UPlayerHUD_UserWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)

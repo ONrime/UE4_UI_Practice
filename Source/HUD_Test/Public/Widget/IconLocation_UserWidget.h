@@ -6,6 +6,8 @@
 #include "Blueprint/UserWidget.h"
 #include "IconLocation_UserWidget.generated.h"
 
+DECLARE_DELEGATE(FIconDelegate);
+
 /**
  * 
  */
@@ -37,24 +39,35 @@ public:
 
 	// 아이콘 종류
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	bool IsHiddenIcon = false;		// 평소에는 가려지고 특정 상황에 보여져야 하는 아이콘인가?
+	bool IsHideIcon = false;		// 평소에는 가려지고 특정 상황에 보여져야 하는 아이콘인가를 판단
 
 protected:
 	virtual void NativeConstruct() override;
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 
-
+	// 가려야 할 때 //////////////////////////////////////////////////////////////////////////
+	//
+	// 아이콘 가리기
 	void HideIcone(bool State);
-	UFUNCTION()
-	void HideIconEnd();
-
-	// 타이머
+	// 가리는 시간 타이머
 	FTimerHandle HiddenEndTimer;
+
+	// 아이콘 보이게 하기
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Hide")
+	void VisibleIcon();
+	virtual void VisibleIcon_Implementation();
+	// 아이콘 보이게 하기 끝내기 (다시 가리기)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Hide")
+	void VisibleIconEnd();
+	virtual void VisibleIconEnd_Implementation();
+
+	/////////////////////////////////////////////////////////////////////////////////////////
+
 
 public:
 
-	UFUNCTION(BlueprintCallable, Category = "Icon")
-	void IconOnwerAttack(bool Set);
+	FIconDelegate VisibleIconDelegate;
+
 
 
 };

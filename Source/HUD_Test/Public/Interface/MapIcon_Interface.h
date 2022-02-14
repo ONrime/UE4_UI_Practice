@@ -14,7 +14,9 @@ class UMapIcon_Interface : public UInterface
 };
 
 /**
- * 
+ * 맵에서 작동 될 아이콘이 필요한 액터에 추가 되는 인터페이스입니다.
+ * 아이콘의 상태를 나타내 줄 EMapIconState의 변수를 만들어 주어야 합니다.
+ * 아이콘과 직접적인 연결이 되어야 함으로 아이콘 위젯 변수(포인터)를 만들어 주어야 합니다.
  */
 
 UENUM(BlueprintType)
@@ -38,17 +40,20 @@ public:
 	//UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "MapIcon")
 	//void StartIcon(EMapIconState Set);
 
+	// 액터의 아이콘 상태를 전달하기 위해 필요한 함수입니다.
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "MapIcon")
 	EMapIconState GetIconState();
 
 	// 아이콘과 액터 연결하기
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "MapIcon")
-	void SetIconLocationWidget(class UUserWidget* Set);
+	void SetIconWidget(class UUserWidget* Set);
+
+	// 아이콘과 액터 연결하기
+	//UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "MapIcon")
+	//class UUserWidget* GetIconLocationWidget();
 
 	//UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "MapIcon")
 	//void UpdateIcon(EMapIconState Set);
-
-	EMapIconState IconState;
 
 protected:
 	//class UIconLocation_UserWidget* IconLocation_Widget = nullptr;

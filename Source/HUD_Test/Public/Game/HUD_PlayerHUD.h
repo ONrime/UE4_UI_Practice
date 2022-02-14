@@ -28,6 +28,12 @@ protected:
 	// UI
 	class UPlayerHUD_UserWidget* PlayerMainUI;
 
+	// UI
+	// ¹Ì´Ï¸Ê
+	TSubclassOf<class UMinimap_UserWidget> MiniMap_WidgetClass;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Widget)
+	class UMinimap_UserWidget* Minimap_Widget;
+
 public:
 
 	UFUNCTION(BlueprintCallable)

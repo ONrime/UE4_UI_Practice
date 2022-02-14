@@ -32,13 +32,17 @@ public:
 	void DelIconMiniMap(AActor* IconActor);
 
 protected:
+	// 이벤트
 	virtual void NativeConstruct() override;
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 
-	
-
+	// UI
+	// 미니맵
+	TSubclassOf<class UMinimap_UserWidget> MiniMap_WidgetClass;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Widget)
 	class UMinimap_UserWidget* Minimap_Widget;
+
+	
 
 private:
 

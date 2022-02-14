@@ -5,7 +5,6 @@
 #include "Materials/MaterialParameterCollection.h"
 #include "Materials/MaterialParameterCollectionInstance.h"
 #include "Interface/MapIcon_Interface.h"
-#include "Widget/IconLocation_UserWidget.h"
 #include "EngineUtils.h"
 
 void UMinimap_UserWidget::NativeConstruct()

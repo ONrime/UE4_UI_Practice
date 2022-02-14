@@ -9,12 +9,12 @@ void UIconLocation_UserWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	/*IsStatic = false;		// 미니맵의 보이는 범위 결정(미니맵을 벗어나도 보이게 할지 결정)
-	IsSoundWave = false;	// 웨이브
-	IsVision = false;		// 시야각
-	IsControllerRotation = false;*/
+	HideIcone(IsHideIcon);
 
-	HideIcone(IsHiddenIcon);
+	VisibleIconDelegate.BindLambda([this]()->void
+	{ // 아이콘 보이게 하기
+		VisibleIcon();
+	});
 }
 
 void UIconLocation_UserWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
@@ -22,7 +22,6 @@ void UIconLocation_UserWidget::NativeTick(const FGeometry& MyGeometry, float InD
 	Super::NativeTick(MyGeometry, InDeltaTime);
 
 	//UE_LOG(LogTemp, Warning, TEXT("!OnwerActor"));
-
 	if (OnwerActor && Minimap_Widget)
 	{
 		// 아이콘의 회전 구하기
@@ -70,7 +69,7 @@ void UIconLocation_UserWidget::NativeTick(const FGeometry& MyGeometry, float InD
 		// 아이콘 설정에 따른 계산
 		// IsStatic가 true면 미니맵에 벗어나면 사라지게 합니다.
 
-		if (!IsStatic && !IsHiddenIcon)
+		if (!IsStatic && !IsHideIcon)
 		{
 			if (IconScala >= 130.0f)
 			{
@@ -89,29 +88,6 @@ void UIconLocation_UserWidget::NativeTick(const FGeometry& MyGeometry, float InD
 				}
 			}
 		}
-		/*/bool HideIcone = IsHiddenIcon;
-		if (!IsStatic && !IsHiddenIcon)
-		{
-			if (IconScala >= 130.0f)
-			{
-				HideIcone = true;
-			}
-			else
-			{
-				HideIcone = false;
-			}
-		}
-
-		if (HideIcone)
-		{
-			if (Icon_Image) Icon_Image->SetVisibility(ESlateVisibility::Hidden);
-			if (Icon_Sight_Widget) Icon_Sight_Widget->SetVisibility(ESlateVisibility::Hidden);
-		}
-		else
-		{
-			if (Icon_Image) Icon_Image->SetVisibility(ESlateVisibility::Visible);
-			if (Icon_Sight_Widget) Icon_Sight_Widget->SetVisibility(ESlateVisibility::Visible);
-		}*/
 	}
 }
 
@@ -129,21 +105,24 @@ void UIconLocation_UserWidget::HideIcone(bool State)
 	}
 }
 
-void UIconLocation_UserWidget::HideIconEnd()
+// 아이콘 가리기
+void UIconLocation_UserWidget::VisibleIconEnd_Implementation()
 {
-	UE_LOG(LogTemp, Warning, TEXT("HideIconEnd"));
-	IsHiddenIcon = true;
-	HideIcone(IsHiddenIcon);
+	UE_LOG(LogTemp, Warning, TEXT("VisibleIconEnd"));
+	HideIcone(true);
 }
 
-void UIconLocation_UserWidget::IconOnwerAttack(bool Set)
+// 아이콘 보이게 하기
+void UIconLocation_UserWidget::VisibleIcon_Implementation()
 {
-	IsHiddenIcon = Set;
-	HideIcone(IsHiddenIcon);
+	HideIcone(false); // 아이콘 가리기
+
+	// 타이머 초기화
 	if (GetWorld()->GetTimerManager().IsTimerActive(HiddenEndTimer))
 	{
 		GetWorld()->GetTimerManager().ClearTimer(HiddenEndTimer);
 	}
 	UE_LOG(LogTemp, Warning, TEXT("HiddenEndTimer"));
-	GetWorld()->GetTimerManager().SetTimer(HiddenEndTimer, this, &UIconLocation_UserWidget::HideIconEnd, 3.0f, false);
+	// 타이머 작동
+	GetWorld()->GetTimerManager().SetTimer(HiddenEndTimer, this, &UIconLocation_UserWidget::VisibleIconEnd, 3.0f, false);
 }

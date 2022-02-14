@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "Interface/MapIcon_Interface.h"
+#include "Widget/IconLocation_UserWidget.h"
 #include "Minimap_UserWidget.generated.h"
 
 /**
@@ -25,7 +26,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Base)
 	class UMaterialInstance* Map_Instance;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Base)
-	TArray<class UIconLocation_UserWidget*> Map_Icons;
+	TArray<UIconLocation_UserWidget*> Map_Icons;
 
 	// 미니맵에 아이콘 추가
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "MapIcon")

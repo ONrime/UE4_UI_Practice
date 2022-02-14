@@ -128,13 +128,6 @@ void AHUD_TestCharacter::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 
-	if (IsLocallyControlled())
-	{
-		IconState = EMapIconState::PLAYER;
-	}
-	else {
-		IconState = EMapIconState::ALLIANCE; // 아이콘 설정
-	}
 }
 
 void AHUD_TestCharacter::BeginPlay()
@@ -159,19 +152,16 @@ void AHUD_TestCharacter::BeginPlay()
 		PlayerHUD = Cast<AHUD_PlayerHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
 		IconState = EMapIconState::PLAYER;
 		PlayerHUD->StartMiniMap();
-		//StartIcon(IconState);
 		//UE_LOG(LogTemp, Warning, TEXT("AHUD_TestCharacter: BeginPlay"));
 	}
 	else
 	{
-		// 플레이어가 아닐때 (적, 동료)
+		// 플레이어가 아닐때 (적, 동료 나중에 게임 모드에서 설정하기)
 		PlayerHUD = nullptr;
 		IconState = EMapIconState::ALLIANCE; // 아이콘 설정
 
 		// 플레이어에게 알리기
 		AHUD_PlayerHUD* OtherPlayerHUD = Cast<AHUD_PlayerHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
-		//if(OtherPlayer && OtherPlayer->PlayerHUD) OtherPlayer->PlayerHUD->UpdateMinimapEvent.Broadcast(this, (int)IconState);
-		//if(OtherPlayer && OtherPlayer->PlayerHUD) OtherPlayer->PlayerHUD->UpdateMinimapEvent.Execute(this, (int)IconState);
 		if (OtherPlayerHUD) OtherPlayerHUD->UpdateMiniMap(this, (int)IconState);
 
 	}
@@ -313,16 +303,10 @@ void AHUD_TestCharacter::MoveRight(float Value)
 
 EMapIconState AHUD_TestCharacter::GetIconState_Implementation()
 {
-	if (PlayerHUD)
-	{
-		//PlayerHUD
-		//PlayerHUD->UpdateMinimapEvent.Execute();
-		//PlayerHUD->StartMiniMap((int)Set);
-	}
 	return IconState;
 }
 
-void AHUD_TestCharacter::SetIconLocationWidget_Implementation(class UUserWidget* Set)
+void AHUD_TestCharacter::SetIconWidget_Implementation(class UUserWidget* Set)
 {
 	Icon_Widget = Cast<UIconLocation_UserWidget>(Set);
 }

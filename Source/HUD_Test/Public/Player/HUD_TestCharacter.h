@@ -56,9 +56,15 @@ protected:
 	// 모드(인칭 변경) 관련
 	bool IsFPS = false; // 1인칭 시점 인지 확인
 
-	//HUD
+	// HUD //////////////////////////////////////////////////////////////////////////////////
 	class AHUD_PlayerHUD* PlayerHUD;
-	class UIconLocation_UserWidget* Icon_Widget = nullptr;
+
+	// 미니맵
+	EMapIconState IconState;							   // 아이콘 상태
+	class UIconLocation_UserWidget* Icon_Widget = nullptr; // 연결된 아이콘 위젯
+
+	/////////////////////////////////////////////////////////////////////////////////////////
+	
 	
 	// 컨트롤러 //////////////////////////////////////////////////////////////////////////////
 	// 입력 관련
@@ -104,14 +110,19 @@ public:
 	// 시야
 	FRotator GetControllerRot() { return ControllerRot; }
 
-	// 미니맵 아이콘설정
+	// 미니맵 ////////////////////////////////////////////////////////////////////////////////
+	// 
+	// 미니맵 상태 설정
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "MapIcon")
 	EMapIconState GetIconState();
 	virtual EMapIconState GetIconState_Implementation() override;
 
+	// 액터와 아이콘을 연결하기
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "MapIcon")
-	void SetIconLocationWidget(class UUserWidget* Set);
-	virtual void SetIconLocationWidget_Implementation(class UUserWidget* Set) override;
+	void SetIconWidget(class UUserWidget* Set);
+	virtual void SetIconWidget_Implementation(class UUserWidget* Set) override;
+
+	/////////////////////////////////////////////////////////////////////////////////////////
 
 
 };
